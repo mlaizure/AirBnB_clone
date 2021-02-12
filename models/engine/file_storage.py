@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ File Storage Module """
 import json
+from os import path
 
 
 class FileStorage:
@@ -34,10 +35,12 @@ class FileStorage:
             deserializes the JSON file
         """
         from ..base_model import BaseModel
-        try:
+        if not path.exists(self.__file_path):
+            pass
+        elif path.getsize(self.__file_path) == 0:
+            pass
+        else:
             with open(self.__file_path, 'r') as f:
                 json_dict = json.load(f)
                 self.__objects = {key: BaseModel(**value)
                                   for key, value in json_dict.items()}
-        except FileNotFoundError:
-            pass

@@ -3,6 +3,7 @@
 import uuid
 from datetime import datetime
 from models import storage
+from copy import deepcopy
 
 
 class BaseModel:
@@ -24,7 +25,6 @@ class BaseModel:
                 else:
                     setattr(self, key, value)
         else:
-            print("calling new")
             storage.new(self)
 
     def __str__(self):
@@ -41,7 +41,7 @@ class BaseModel:
     def to_dict(self):
         """ returns a dictionary containing all keys and values of __dict__
         of the instance"""
-        my_dict = self.__dict__
+        my_dict = deepcopy(self.__dict__)
         my_dict['__class__'] = type(self).__name__
         my_dict['created_at'] = str(self.created_at.isoformat())
         my_dict['updated_at'] = str(self.updated_at.isoformat())

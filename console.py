@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 """ CMD module to take commands from user """
 
-import cmd, sys
+import cmd
+import sys
 from models.base_model import BaseModel
+
 
 class HBNBCommand(cmd.Cmd):
     """ This class creates a simple shell
