@@ -59,7 +59,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return False
         key = arg[0] + '.' + arg[1]
-        if key not in obj_list:
+        if key not in objs:
             print("** no instance found **")
             return False
         else:
@@ -86,6 +86,34 @@ class HBNBCommand(cmd.Cmd):
         key = largs[0] + '.' + largs[1]
         obj = objs.get(key)
         print(obj)
+
+    def do_destroy(self, arg):
+        """destroy the given instance. ID tells us which
+        instance to destory """
+        largs = self.parse(arg)
+        if not self.check_class(largs):
+            return
+        if not self.check_id(largs):
+            return
+        objs = storage.all()
+        key = largs[0] + '.' + largs[1]
+        del objs[key]
+        storage.save()
+
+    def do_all(self, arg):
+        """ prints all instances using there __str__ method
+        in a list of instances """
+        largs = self.parse(arg)
+        if len(largs) == 0:
+            pass
+        elif largs[0] != "BaseModel":
+            print("** class doesn't exit **")
+            return
+        dict_of_obs = storage.all()
+        list_of_obs = []
+        for key in dict_of_obs:
+            list_of_obs.append(str(dict_of_obs.get(key)))
+        print(list_of_obs)
 
     def close(self):
         """ closes prompt """
