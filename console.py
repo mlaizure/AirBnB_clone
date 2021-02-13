@@ -3,6 +3,7 @@
 
 import cmd
 import sys
+import shlex
 from models.base_model import BaseModel
 from models import storage
 
@@ -23,7 +24,7 @@ class HBNBCommand(cmd.Cmd):
     @staticmethod
     def parse(arg):
         """ parses args passed """
-        return arg.split()
+        return shlex.split(arg)
 
     def do_quit(self, arg):
         """ quits the prompt on quit: (prompt) quit """
@@ -114,6 +115,26 @@ class HBNBCommand(cmd.Cmd):
         for key in dict_of_obs:
             list_of_obs.append(str(dict_of_obs.get(key)))
         print(list_of_obs)
+
+    def do_update(self, arg):
+        """ updates an instance based on the class name and id by adding or
+        updating attribute """
+        largs = self.parse(arg)
+        if not self.check_class(largs):
+            return
+        if not self.check_id(largs):
+            return
+        if len(largs) < 3:
+            print("** attribute name missing **")
+            return
+        if len(largs) < 4:
+            print("** value missing **")
+            return
+        dict_of_obs = storage.all()
+        key = largs[0] + '.' + largs[1]
+        obj = dict_of_obs.get(key)
+        setattr(obj, largs[2], largs[3])
+        obj.save()
 
     def close(self):
         """ closes prompt """
