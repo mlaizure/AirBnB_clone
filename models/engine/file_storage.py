@@ -35,6 +35,8 @@ class FileStorage:
             deserializes the JSON file
         """
         from ..base_model import BaseModel
+        from models.user import User
+        cl_names = {"BaseModel": BaseModel, "User": User}
         if not path.exists(self.__file_path):
             pass
         elif path.getsize(self.__file_path) == 0:
@@ -42,5 +44,6 @@ class FileStorage:
         else:
             with open(self.__file_path, 'r') as f:
                 json_dict = json.load(f)
-                self.__objects = {key: BaseModel(**value)
-                                  for key, value in json_dict.items()}
+            for key, value in json_dict.items():
+                cl_nm = cl_names.get(key.split('.')[0])
+                self.__objects[key] = cl_nm(**value)

@@ -6,7 +6,7 @@ import sys
 import shlex
 from models.base_model import BaseModel
 from models import storage
-
+from models.user import User
 
 class HBNBCommand(cmd.Cmd):
     """ This class creates a simple shell
@@ -14,6 +14,7 @@ class HBNBCommand(cmd.Cmd):
     """
     prompt = '(hbnb) '
     file = None
+    cl_names = {"BaseModel": BaseModel, "User": User}
 
     @staticmethod
     def test_tty():
@@ -42,19 +43,27 @@ class HBNBCommand(cmd.Cmd):
         self.test_tty()
         pass
 
-    @staticmethod
-    def check_class(arg):
+    def select_obj(self, arg):
+        """ finds the correct object in dicitonary """
+        if arg not in self.cl_names:
+            return False
+        else:
+            return self.cl_names.get(arg)
+
+    def check_class(self, arg):
+        """ checks to make sure class name is present and valid """
         if len(arg) == 0:
             print("** class name missing **")
             return False
-        elif arg[0] != "BaseModel":
-            print("** class doesn't exit **")
+        elif arg[0] not in self.cl_names:
+            print("** class doesn't exist **")
             return False
         else:
             return True
 
     @staticmethod
     def check_id(arg):
+        """ checks id of object to see if valid """
         objs = storage.all()
         if len(arg) < 2:
             print("** instance id missing **")
@@ -71,9 +80,10 @@ class HBNBCommand(cmd.Cmd):
         largs = self.parse(arg)
         if not self.check_class(largs):
             return
-        BM = BaseModel()
-        BM.save()
-        print(BM.id)
+        cls = self.select_obj(largs[0])
+        new_obj = cls()
+        new_obj.save()
+        print(new_obj.id)
 
     def do_show(self, arg):
         """prints the string representation of an instance based on the
@@ -107,7 +117,7 @@ class HBNBCommand(cmd.Cmd):
         largs = self.parse(arg)
         if len(largs) == 0:
             pass
-        elif largs[0] != "BaseModel":
+        elif largs[0] not in self.cl_names:
             print("** class doesn't exit **")
             return
         dict_of_obs = storage.all()
