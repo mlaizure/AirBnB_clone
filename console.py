@@ -7,14 +7,21 @@ import shlex
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+
 
 class HBNBCommand(cmd.Cmd):
     """ This class creates a simple shell
     for the user to input info
     """
     prompt = '(hbnb) '
-    file = None
-    cl_names = {"BaseModel": BaseModel, "User": User}
+    cl_names = {"BaseModel": BaseModel, "User": User, "State": State,
+                "City": City, "Amenity": Amenity, "Place": Place,
+                "Review": Review}
 
     @staticmethod
     def test_tty():
@@ -112,18 +119,21 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
 
     def do_all(self, arg):
-        """ prints all instances using there __str__ method
+        """ prints all instances using the __str__ method
         in a list of instances """
         largs = self.parse(arg)
+        dict_of_obs = storage.all()
+        list_of_obs = []
         if len(largs) == 0:
-            pass
+            for key in dict_of_obs:
+                list_of_obs.append(str(dict_of_obs.get(key)))
         elif largs[0] not in self.cl_names:
             print("** class doesn't exit **")
             return
-        dict_of_obs = storage.all()
-        list_of_obs = []
-        for key in dict_of_obs:
-            list_of_obs.append(str(dict_of_obs.get(key)))
+        else:
+            for key in dict_of_obs:
+                if key.split('.')[0] == largs[0]:
+                    list_of_obs.append(str(dict_of_obs.get(key)))
         print(list_of_obs)
 
     def do_update(self, arg):
@@ -145,12 +155,6 @@ class HBNBCommand(cmd.Cmd):
         obj = dict_of_obs.get(key)
         setattr(obj, largs[2], largs[3])
         obj.save()
-
-    def close(self):
-        """ closes prompt """
-        if self.file:
-            self.file.close()
-            self.file = None
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
