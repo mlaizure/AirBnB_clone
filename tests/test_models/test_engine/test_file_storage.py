@@ -27,7 +27,6 @@ class TestFileStorage(unittest.TestCase):
     def test_all(self):
         """test all method of file storage"""
         objects = self.storage.all()
-        self.assertEqual(objects, {})
         self.storage.new(self.BM)
         self.storage.new(self.BM1)
         objects = self.storage.all()
