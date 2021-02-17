@@ -6,9 +6,8 @@ from os import path
 
 class FileStorage:
     """ Handles the serialization of class to JSON """
-    def __init__(self, *args, **kwargs):
-        self.__file_path = "file.json"
-        self.__objects = {}
+    __file_path = "file.json"
+    __objects = {}
 
     def all(self):
         """
