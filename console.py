@@ -153,7 +153,14 @@ class HBNBCommand(cmd.Cmd):
         dict_of_obs = storage.all()
         key = largs[0] + '.' + largs[1]
         obj = dict_of_obs.get(key)
-        setattr(obj, largs[2], largs[3])
+        try:
+            value = int(largs[3])
+        except ValueError:
+            try:
+                value = float(largs[3])
+            except ValueError:
+                value = largs[3]
+        setattr(obj, largs[2], value)
         obj.save()
 
 if __name__ == '__main__':
