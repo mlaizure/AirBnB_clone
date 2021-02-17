@@ -63,7 +63,6 @@ class HBNBCommand(cmd.Cmd):
                         attr_dict = literal_eval(attr_str)
                         dict_of_obs = storage.all()
                         key = cls + '.' + update_id[1:-1]
-                        print(key)
                         obj = dict_of_obs.get(key)
                         obj.__init__(**attr_dict)
                     else:
