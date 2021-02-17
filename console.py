@@ -64,7 +64,8 @@ class HBNBCommand(cmd.Cmd):
                         dict_of_obs = storage.all()
                         key = cls + '.' + update_id[1:-1]
                         obj = dict_of_obs.get(key)
-                        obj.__init__(**attr_dict)
+                        for k, v in attr_dict.items():
+                            setattr(obj, k, v)
                         obj.save()
                     else:
                         self.do_update(cls + ' ' + update_id +
