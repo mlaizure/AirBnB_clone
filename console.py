@@ -4,6 +4,7 @@
 import cmd
 import sys
 import shlex
+from ast import literal_eval
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
@@ -57,9 +58,26 @@ class HBNBCommand(cmd.Cmd):
                         super.default(arg)
                     attr_list = arg.split(',')
                     update_id = attr_list[0].split('(')[1]
-                    self.do_update(cls + ' ' + update_id +
-                                   attr_list[1] +
-                                   attr_list[2][:-1])
+                    if '{' in cmd:
+                        attr_str = "{" + arg.split('{')[1][:-1]
+                        attr_dict = literal_eval(attr_str)
+                        dict_of_obs = storage.all()
+                        key = cls + '.' + update_id[1:-1]
+                        print(key)
+                        obj = dict_of_obs.get(key)
+                        obj.__init__(**attr_dict)
+                    else:
+                        self.do_update(cls + ' ' + update_id +
+                                       attr_list[1] +
+                                       attr_list[2][:-1])
+                elif cmd == 'count()':
+                    cls = arg.split('.')[0]
+                    objects = storage.all()
+                    count = 0
+                    for key in objects:
+                        if key.split('.')[0] == cls:
+                            count += 1
+                    print(count)
                 else:
                     super().default(arg)
             else:
