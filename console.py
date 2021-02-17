@@ -34,6 +34,39 @@ class HBNBCommand(cmd.Cmd):
         """ parses args passed """
         return shlex.split(arg)
 
+    def default(self, arg):
+        """ parse line for commands where class name is first """
+        try:
+            cls = arg.split('.')[0]
+            cmd = arg.split('.')[1]
+            if cls in self.cl_names:
+                if cmd == 'all()':
+                    self.do_all(cls)
+                elif 'show' in cmd:
+                    if ')' not in cmd:
+                        super.default(arg)
+                    show_id = arg.split('(')[1]
+                    self.do_show(cls + ' ' + show_id[:-1])
+                elif 'destroy' in cmd:
+                    if ')' not in cmd:
+                        super.default(arg)
+                    destroy_id = arg.split('(')[1]
+                    self.do_destroy(cls + ' ' + destroy_id[:-1])
+                elif 'update' in cmd:
+                    if ')' not in cmd:
+                        super.default(arg)
+                    attr_list = arg.split(',')
+                    update_id = attr_list[0].split('(')[1]
+                    self.do_update(cls + ' ' + update_id +
+                                   attr_list[1] +
+                                   attr_list[2][:-1])
+                else:
+                    super().default(arg)
+            else:
+                super().default(arg)
+        except:
+            super().default(arg)
+
     def do_quit(self, arg):
         """ quits the prompt on quit: (prompt) quit """
         self.test_tty()
