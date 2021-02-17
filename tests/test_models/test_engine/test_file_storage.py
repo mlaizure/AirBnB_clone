@@ -27,9 +27,6 @@ class TestFileStorage(unittest.TestCase):
     def test_all(self):
         """test all method of file storage"""
         objects = self.storage.all()
-        self.storage.new(self.BM)
-        self.storage.new(self.BM1)
-        objects = self.storage.all()
         self.assertIsInstance(objects, dict)
         key = "{}.{}".format(type(self.BM).__name__, self.BM.id)
         self.assertIn(key, objects)
@@ -40,9 +37,15 @@ class TestFileStorage(unittest.TestCase):
 
     def test_new(self):
         """test new method of file storage"""
+        attr_dict = {"attribute": "value"}
+        new_obj = BaseModel(**attr_dict)
         objects = self.storage.all()
+        key_new = "{}.{}".format(type(new_obj).__name__, new_obj.id)
+        self.assertNotIn(key_new, objects)
+        self.storage.new(new_obj)
+        self.assertIn(key_new, objects)
         key = "{}.{}".format(type(self.BM).__name__, self.BM.id)
-        self.assertIn(key, objects)
+        self.assertIn(key_new, objects)
         self.assertEqual(self.BM, objects.get(key))
 
     def test_save(self):
