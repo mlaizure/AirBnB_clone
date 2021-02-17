@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
             for key in dict_of_obs:
                 list_of_obs.append(str(dict_of_obs.get(key)))
         elif largs[0] not in self.cl_names:
-            print("** class doesn't exit **")
+            print("** class doesn't exist **")
             return
         else:
             for key in dict_of_obs:
