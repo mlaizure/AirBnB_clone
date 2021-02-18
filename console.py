@@ -62,7 +62,10 @@ class HBNBCommand(cmd.Cmd):
                         attr_str = "{" + arg.split('{')[1][:-1]
                         attr_dict = literal_eval(attr_str)
                         dict_of_obs = storage.all()
-                        key = cls + '.' + update_id[1:-1]
+                        if update_id[0] == '\"':
+                            key = cls + '.' + update_id[1:-1]
+                        else:
+                            key = cls + '.' + update_id
                         obj = dict_of_obs.get(key)
                         for k, v in attr_dict.items():
                             setattr(obj, k, v)
