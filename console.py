@@ -68,8 +68,8 @@ class HBNBCommand(cmd.Cmd):
                             key = cls + '.' + update_id
                         obj = dict_of_obs.get(key)
                         for k, v in attr_dict.items():
-                            setattr(obj, k, v)
-                        obj.save()
+                            self.do_update(cls + ' ' + update_id +
+                                           ' ' + k + ' ' + v)
                     else:
                         self.do_update(cls + ' ' + update_id +
                                        attr_list[1] +
