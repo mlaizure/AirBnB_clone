@@ -2,13 +2,13 @@
 - Creating command interpreter to manage objects for the AirBnB clone
 - Has a parent class (`BaseModel`) for initialization and json serialization and deserialization of class instances
 - Stores and reloads json string representation from file using abstracted storage engine `FileStorage`
-- Creates all clases for future AirBnB projects (all inherit from `BaseModel`)
-  - User
-  - State
-  - City
-  - Amenity
-  - Place
-  - Review
+- Creates all classes for future AirBnB projects (all inherit from `BaseModel`)
+  - `User`
+  - `State`
+  - `City`
+  - `Amenity`
+  - `Place`
+  - `Review`
 - Unittests to validate all classes including storage engine
 
 ## Command interpreter
@@ -16,8 +16,8 @@
   - clone repository
   - run ./console.py from the repo's base directory
 - How to use:
-  - quit and Ctrl + D to exit console
-  - help to see valid commands and documentation
+  - quit or Ctrl + D to exit console
+  - help: see valid commands and documentation
   - create: creates a new instance of a class (`$ create BaseModel`)
   - show: prints stringified instance of a class (`$ show BaseModel 123`)
   - destroy: deletes an instance (`$ destroy BaseModel 123`)
