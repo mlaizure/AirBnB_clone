@@ -8,13 +8,18 @@
     margin-left: 20px;
 }
 
+.places_container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .places article {
     width: 390px;
     padding: 20px;
     margin: 20px;
     border: 1px solid #FF5A5F;
     border-radius: 4px;
-    display: inline-block;
 }
 
 .places article h2 {
@@ -30,9 +35,7 @@
     height: 60px;
     line-height: 60px;
     font-size: 30px;
-    display: inline-block;
-    position: absolute;
-    margin-left: 135px;
+    float: right;
     margin-top: -60px;
 }
 
